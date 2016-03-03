@@ -16,7 +16,11 @@
 
 	echo "Connected<br>";
 	
-	$strSQL = "SELECT U.Name, U.RFID, E.Event, E.Approved, E.Room, E.StartTime, E.EndTime FROM tbl_Users AS U RIGHT JOIN tbl_Events AS E ON U.RFID = E.RFID WHERE (E.Approved = 1) AND (U.RFID = 18460) ORDER BY E.StartTime";
+	$strSQL = "SELECT U.Name, U.RFID, E.Event, E.Approved, E.Room, E.StartTime, E.EndTime
+			   FROM tbl_Users AS U
+			   RIGHT JOIN tbl_Events AS E
+			   ON U.RFID = E.RFID
+			   WHERE (E.Approved = 1) AND (U.RFID = 18460)";
 	$query = mssql_query($strSQL);
 	
 	echo "Queried: ";
@@ -29,19 +33,19 @@
 		echo $numRows . " row" . ($numRows == 1 ? "" : "s") . " returned";
 
 		$data = mssql_fetch_array($query);
-		$access = $data["Approved"]
+		$access = $data["Approved"];
 		
 		if ($access) {
-			$name = $data["Name"]
-			$event = $data["Event"]
-			$room = $data["Room"]
-			$startTime = $data["StartTime"]
-			$endTime = $data["EndTime"]
+			$name = $data["Name"];
+			$event = $data["Event"];
+			$room = $data["Room"];
+			$startTime = $data["StartTime"];
+			$endTime = $data["EndTime"];
 			
 			//$newtimestamp = strtotime("+20 days", $yourtimestamp);
 			
 			echo "Welcome " . $name . "! You have room "  $room " scheduled for a " . $event . 
-				" meeting from " . $startTime . " to " . $endTime 
+				" meeting from " . $startTime . " to " . $endTime;
 		}
 	}
 
