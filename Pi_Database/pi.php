@@ -1,6 +1,14 @@
 <html>
  <body>
 <?php
+	if ($_GET) {
+		&argument1 = &_GET['argument1'];
+		&argument1 = &_GET['argument1'];
+	} else {
+		$rfidValue = $argv[1];
+		$timeRequest = $argv[2];
+	}
+	
 	$servername = "172.99.97.197:4120";
 	$username = "475692_request";
 	$password = "Password123";
@@ -14,9 +22,9 @@
 	$selected = mssql_select_db($db, $dbhandle)
 	or die("Couldn't open database $db"); 	
 	
-	$rfidValue = "18460";
-	$startTimeRequest = "2016-01-01 00:00:00";
-	$endTimeRequest = "2017-01-01 00:00:00";
+	//$rfidValue = "18460";
+	//$timeRequest = "2016-01-01 00:00:00";
+
 	
 	$strSQL = "SELECT U.Name, U.RFID, E.Event, E.Approved, E.Room, E.StartTime, E.EndTime
 			   FROM tbl_Users AS U
@@ -24,8 +32,8 @@
 			   ON U.RFID = E.RFID
 			   WHERE E.Approved = 1 
 			   AND U.RFID = " . $rfidValue . " 
-			   AND E.StartTime > '" . $startTimeRequest . "' 
-			   AND E.EndTime < '" . $endTimeRequest . "'";
+			   AND E.StartTime < '" . $timeRequest . "' 
+			   AND E.EndTime > '" . $timeRequest . "'";
 	$query = mssql_query($strSQL);
 
 	// count the returned rows
