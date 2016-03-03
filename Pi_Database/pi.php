@@ -13,25 +13,27 @@
 	// select a database
 	$selected = mssql_select_db($db, $dbhandle)
 	or die("Couldn't open database $db"); 	
-
-	echo "Connected<br>";
+	
+	$rfidValue = "18460";
+	$startTimeRequest = "2016-01-01 00:00:00";
+	$endTimeRequest = "2017-01-01 00:00:00";
 	
 	$strSQL = "SELECT U.Name, U.RFID, E.Event, E.Approved, E.Room, E.StartTime, E.EndTime
-				FROM tbl_Users AS U
-				RIGHT JOIN tbl_Events AS E
-				ON U.RFID = E.RFID
-				WHERE E.Approved = 1 AND U.RFID = 18460";
+			   FROM tbl_Users AS U
+			   RIGHT JOIN tbl_Events AS E
+			   ON U.RFID = E.RFID
+			   WHERE E.Approved = 1 
+			   AND U.RFID = " . $rfidValue . " 
+			   AND E.StartTime > '" . $startTimeRequest . "' 
+			   AND E.EndTime < '" . $endTimeRequest . "'";
 	$query = mssql_query($strSQL);
-	
-	echo "Queried: ";
-	
+
 	// count the returned rows
 	$numRows = mssql_num_rows($query);
+	
 	if (!$numRows) {
 		echo "No records found.";
 	} else {
-		echo $numRows . " row" . ($numRows == 1 ? "" : "s") . " returned";
-
 		$data = mssql_fetch_array($query);
 		$access = $data["Approved"];
 		
@@ -46,10 +48,10 @@
 			
 			echo "Welcome " . $name . "! You have room " . $room . " scheduled for a " . $event . 
 				" meeting from " . $startTime . " to " . $endTime;
+		} else {
+			echo "Access denied";
 		}
 	}
-
-	echo "<br>Hello $user!<br>";
 ?>
  </body>
 </html>
