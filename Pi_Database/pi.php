@@ -1,7 +1,4 @@
-<html>
- <body>
 <?php
-/*
 	if ($_GET) {
 		$argument1 = $_GET['argument1'];
 		$argument1 = $_GET['argument1'];
@@ -9,7 +6,6 @@
 		$rfidValue = $argv[1];
 		$timeRequest = $argv[2];
 	}
-*/
 	
 	$servername = "172.99.97.197:4120";
 	$username = "475692_request";
@@ -26,8 +22,8 @@
 	
 	$rfidValue = "18460";
 	$roomRequest = "206"
-	$timeRequest = "2016-02-20 12:40:00";
-
+	$timeRequest = str_replace("_", " ", "2016-02-20_12:40:00");
+	//$timeRequest = strtotime("+20 minutes", $timeRequest);
 	
 	$strSQL = "SELECT U.Name, U.RFID, E.Event, E.Approved, E.Room, E.StartTime, E.EndTime
 			   FROM tbl_Users AS U
@@ -48,21 +44,16 @@
 		$data = mssql_fetch_array($query);
 		$access = $data["Approved"];
 		
-		if ($access) { // && ($room == $roomRequest) && ($startTime > $timeRequest) && ($endTime > $timeRequest)) {
+		if ($access) {
 			$name = $data["Name"];
 			$event = $data["Event"];
 			$room = $data["Room"];
 			$startTime = $data["StartTime"];
 			$endTime = $data["EndTime"];
 			
-			//$newtimestamp = strtotime("+20 days", $yourtimestamp);
 			
 			echo "Welcome " . $name . "! You have room " . $room . " scheduled for a " . $event . 
 				" meeting from " . $startTime . " to " . $endTime;
-		} /*else {
-			echo "Access denied";
-		}*/
+		}
 	}
 ?>
- </body>
-</html>
