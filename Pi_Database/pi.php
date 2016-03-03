@@ -16,7 +16,7 @@
 
 	echo "Connected<br>";
 	
-	strSQL = "SELECT U.Name, U.RFID, E.Event, E.Approved, E.Room, E.StartTime, E.EndTime FROM tbl_Users AS U RIGHT JOIN tbl_Events AS E ON U.RFID = E.RFID WHERE E.Approved = 1 AND U.RFID = 18460 ORDER BY E.StartTime";
+	$strSQL = "SELECT U.Name, U.RFID, E.Event, E.Approved, E.Room, E.StartTime, E.EndTime FROM tbl_Users AS U RIGHT JOIN tbl_Events AS E ON U.RFID = E.RFID WHERE (E.Approved = 1) AND (U.RFID = 18460) ORDER BY E.StartTime";
 	$query = mssql_query($strSQL);
 	
 	echo "Queried: ";
