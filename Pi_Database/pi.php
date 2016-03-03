@@ -1,12 +1,5 @@
 <html>
- <head>
-  <title>PHP Test</title>
- </head>
  <body>
-	<div><font class="ws8" color="#000000" face="Georgia" size="30">
-		Sample Database
-	</font></div>
-
 <?php
 	$servername = "mssql1401.wc2\inst1";
 	$username = "475692_request";
