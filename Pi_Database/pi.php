@@ -1,7 +1,7 @@
 <html>
  <body>
 <?php
-	$servername = "mssql1401.wc2\inst1";
+	$servername = "172.99.97.197:4120";
 	$username = "475692_request";
 	$password = "Password123";
 	$db = "475692_dbce491";
@@ -44,7 +44,7 @@
 			
 			//$newtimestamp = strtotime("+20 days", $yourtimestamp);
 			
-			echo "Welcome " . $name . "! You have room "  $room " scheduled for a " . $event . 
+			echo "Welcome " . $name . "! You have room " . $room . " scheduled for a " . $event . 
 				" meeting from " . $startTime . " to " . $endTime;
 		}
 	}
