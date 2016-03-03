@@ -2,8 +2,8 @@
  <body>
 <?php
 	if ($_GET) {
-		&argument1 = &_GET['argument1'];
-		&argument1 = &_GET['argument1'];
+		$argument1 = $_GET['argument1'];
+		$argument1 = $_GET['argument1'];
 	} else {
 		$rfidValue = $argv[1];
 		$timeRequest = $argv[2];
