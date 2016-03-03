@@ -16,19 +16,11 @@
 
 	echo "Connected<br>";
 	
-	// run a query
-	/*$strSQL = "SELECT U.Name, E.Event, E.Approved, E.Room, E.StartTime, E.EndTime 
-			   FROM tbl_Users AS U
-			   RIGHT JOIN tbl_Events AS E
-			   ON U.RFID = E.RFID
-			   WHERE E.StartTime >= '2016-02-05'
-			   ORDER BY E.StartTime"; // WHERE E.Approved = 0
-	*/
-	strSQL = "SELECT U.Name, E.Event, E.Approved, E.Room, E.StartTime, E.EndTime 
+	strSQL = "SELECT U.Name, U.RFID, E.Event, E.Approved, E.Room, E.StartTime, E.EndTime 
 			  FROM tbl_Users AS U
 			  RIGHT JOIN tbl_Events AS E
 			  ON U.RFID = E.RFID
-			  WHERE E.Approved = 1
+			  WHERE E.Approved = 1 AND U.RFID = 18460
 			  ORDER BY E.StartTime"; // WHERE E.Approved = 0
 	$query = mssql_query($strSQL);
 	
