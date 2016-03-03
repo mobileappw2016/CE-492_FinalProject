@@ -9,7 +9,7 @@
 		$rfidValue = $argv[1];
 		$timeRequest = $argv[2];
 	}
-	*/
+*/
 	
 	$servername = "172.99.97.197:4120";
 	$username = "475692_request";
@@ -33,34 +33,35 @@
 			   FROM tbl_Users AS U
 			   RIGHT JOIN tbl_Events AS E
 			   ON U.RFID = E.RFID
-			   WHERE U.RFID = " . $rfidValue; // . "
-			   //AND E.StartTime < '" . $timeRequest . "' 
-			   //AND E.EndTime > '" . $timeRequest . "'";
+			   WHERE U.RFID = " . $rfidValue . "
+			   AND E.Room = " . $roomRequest . "
+			   AND E.StartTime < '" . $timeRequest . "' 
+			   AND E.EndTime > '" . $timeRequest . "'";
 	$query = mssql_query($strSQL);
 
 	// count the returned rows
 	$numRows = mssql_num_rows($query);
 	
 	if (!$numRows) {
-		echo "No records found.";
+		echo "Access denied.";
 	} else {
 		$data = mssql_fetch_array($query);
 		$access = $data["Approved"];
-		$room = $data["Room"];
-		$startTime = $data["StartTime"];
-		$endTime = $data["EndTime"];
 		
-		if ($access && ($room == $roomRequest) && ($startTime > $timeRequest) && ($endTime > $timeRequest)) {
+		if ($access) { // && ($room == $roomRequest) && ($startTime > $timeRequest) && ($endTime > $timeRequest)) {
 			$name = $data["Name"];
 			$event = $data["Event"];
+			$room = $data["Room"];
+			$startTime = $data["StartTime"];
+			$endTime = $data["EndTime"];
 			
 			//$newtimestamp = strtotime("+20 days", $yourtimestamp);
 			
 			echo "Welcome " . $name . "! You have room " . $room . " scheduled for a " . $event . 
 				" meeting from " . $startTime . " to " . $endTime;
-		} else {
+		} /*else {
 			echo "Access denied";
-		}
+		}*/
 	}
 ?>
  </body>
