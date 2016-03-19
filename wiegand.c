@@ -1,7 +1,7 @@
 /*
  * Wiegand API Raspberry Pi
- * By Kyle Mallory
- * 12/01/2013
+ * By Ari Budiono
+ * 03/20/2016
  * Based on previous code by Daniel Smith (www.pagemac.com) and Ben Kent (www.pidoorman.com)
  * Depends on the wiringPi library by Gordon Henterson: https://projects.drogon.net/raspberry-pi/wiringpi/
  *
@@ -14,6 +14,7 @@
  *   The Raspberry Pi GPIO pins are 3.3V, NOT 5V. Please take appropriate precautions to bring the
  *   5V Data 0 and Data 1 voltges down. I used a 330 ohm resistor and 3V3 Zenner diode for each
  *   connection. FAILURE TO DO THIS WILL PROBABLY BLOW UP THE RASPBERRY PI!
+ * Command to build it is: cc -o wiegand wiegand.c -L/usr/local/lib -lwiringPi -lpthread
  */
 #include <stdio.h>
 #include <stdlib.h>
@@ -25,6 +26,8 @@
 
 #define D0_PIN 0
 #define D1_PIN 1
+#define D2_PIN 2
+#define D3_PIN 3
 
 #define WIEGANDMAXDATA 32
 #define WIEGANDTIMEOUT 3000000
@@ -166,16 +169,18 @@ void main(void) {
         char readbuf[80];
         char rfidstring[10];
 	int rfidValue;
-
-
+	char phpresult[1000];
+	wiringPiSetup();
     	wiegandInit(D0_PIN, D1_PIN);
-
+	
+	pinMode(D2_PIN, OUTPUT);
+	pinMode(D3_PIN, OUTPUT);
 
     while(1) {
 		int bitLen = wiegandGetPendingBitCount();
 	        if (bitLen == 0) {
         		usleep(5000);
-        } 
+	        } 
 	else {
             	char data[4];
             	bitLen = wiegandReadData((void *)data, 4);
@@ -216,13 +221,28 @@ void main(void) {
 		        perror("popen");
 		        exit(1);
 		}
+		
+		//phpresult = 0;			
 
 		/*Processing loop */
-		while(fgets(readbuf,80, pipein_fp))
+		while(fgets(readbuf,80, pipein_fp)){
 		        printf("%s", readbuf);
+			strcat(phpresult, readbuf);
+		}
+		printf(" This is phpresult: %s", phpresult);
 
 		/* Close the pipes */
 		pclose(pipein_fp);
+		
+		if (strcmp(phpresult, "Access denied.")) {
+			digitalWrite(2, HIGH) ; delay(250);
+			digitalWrite(2, LOW) ; delay(250);
+		
+			delay(500);
+		
+			digitalWrite(3, HIGH) ; delay(250);
+			digitalWrite(3, LOW); delay(250);
+		}
 
 	
 		}
