@@ -170,6 +170,7 @@ void main(void) {
         char rfidstring[10];
 	int rfidValue;
 	char phpresult[1000];
+	int clear;
 	wiringPiSetup();
     	wiegandInit(D0_PIN, D1_PIN);
 	
@@ -182,7 +183,10 @@ void main(void) {
         		usleep(5000);
 	        } 
 	else {
-            	char data[4];
+            	for(clear = 0; clear <= 100; clear++){
+			phpresult[clear] = 0;
+		}
+		char data[4];
             	bitLen = wiegandReadData((void *)data, 4);
             	int bytes = bitLen / 8 + 1;
             	printf("Read %d bits (%d bytes): ", bitLen, bytes);
@@ -208,7 +212,7 @@ void main(void) {
 		sprintf(rfidstring, " %d", rfidValue); //convert rfid value to string
 
 		//Put together the string for the popen command, room # always 206
-        	char stringrequest[100] = "php test.php 206";
+        	char stringrequest[100] = "php test.php AB1234";
 		strcat(stringrequest, rfidstring);
 		strcat(stringrequest, strResponse);
 		
@@ -222,19 +226,20 @@ void main(void) {
 		        exit(1);
 		}
 		
-		//phpresult = 0;			
+					
 
 		/*Processing loop */
 		while(fgets(readbuf,80, pipein_fp)){
 		        printf("%s", readbuf);
 			strcat(phpresult, readbuf);
 		}
-		printf(" This is phpresult: %s", phpresult);
+		
 
 		/* Close the pipes */
 		pclose(pipein_fp);
+		printf(" This is phpresult: %s", phpresult);
 		
-		if (strcmp(phpresult, "Access denied.")) {
+		if (strcmp(phpresult, "Access granted") == 0 ) {
 			digitalWrite(2, HIGH) ; delay(250);
 			digitalWrite(2, LOW) ; delay(250);
 		

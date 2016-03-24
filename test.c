@@ -1,4 +1,3 @@
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -22,7 +21,7 @@ int main(void)
 	
 	sprintf(rfidstring, " %d", rfid);
 	
-	char stringrequest[100] = "php test.php 206";
+	char stringrequest[100] = "php test.php AB1234";
 	strcat(stringrequest, rfidstring);
 	strcat(stringrequest, strResponse);
 

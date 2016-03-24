@@ -29,7 +29,7 @@
 			   RIGHT JOIN tbl_Events AS E
 			   ON U.RFID = E.RFID
 			   WHERE U.RFID = " . $rfidValue . "
-			   AND E.Room = " . $roomRequest . "
+			   AND E.Room = '" . $roomRequest . "'
 			   AND E.StartTime < '" . $timeRequest . "' 
 			   AND E.EndTime > '" . $timeRequest . "'";
 	$query = mssql_query($strSQL);
@@ -38,7 +38,11 @@
 	
 	if (!$numRows) {
 		echo "Access denied.";
-	} else {
+	} 
+	else if($numRows) {
+		echo "Access granted";
+	}
+	else {
 		$data = mssql_fetch_array($query);
 		$access = $data["Approved"];
 		
